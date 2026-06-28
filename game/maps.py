@@ -1,6 +1,6 @@
 """Map logic for Don't Mess With the Stars."""
 
-from game.settings import TILE_SIZE
+from game.settings import MAP_OFFSET_X, MAP_OFFSET_Y, TILE_SIZE
 
 
 FLOOR = "."
@@ -46,7 +46,7 @@ class GameMap:
             for col_index, tile in enumerate(row):
                 position = (
                     col_index * TILE_SIZE,
-                    row_index * TILE_SIZE,
+                    MAP_OFFSET_Y + row_index * TILE_SIZE,
                 )
 
                 screen.blit(floor_texture, position)
@@ -61,6 +61,9 @@ class GameMap:
         for row_index, row in enumerate(self.level):
             for col_index, tile in enumerate(row):
                 if tile == PLAYER_START:
-                    return col_index * TILE_SIZE, row_index * TILE_SIZE
+                    return (
+                        col_index * TILE_SIZE,
+                        MAP_OFFSET_Y + row_index * TILE_SIZE,
+                    )
 
-        return 0, 0
+        return 0, 80

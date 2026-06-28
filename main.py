@@ -5,8 +5,10 @@
 import pygame
 
 from game.assets_manager import AssetManager
+from game.ui_manager import UIManager
 from game.maps import GameMap, LEVEL_1
-from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE
+from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y
+
 
 
 def main():
@@ -18,6 +20,8 @@ def main():
 
     assets_manager = AssetManager()
     assets_manager.load_all()
+    ui_manager = UIManager(assets_manager)
+   
 
     game_map = GameMap(LEVEL_1, assets_manager)
 
@@ -30,7 +34,7 @@ def main():
                 running = False
 
         game_map.draw(screen)
-
+        ui_manager.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
 

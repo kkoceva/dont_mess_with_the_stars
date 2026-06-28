@@ -1,25 +1,39 @@
+"""Main entry point for Don't Mess With the Stars."""
+
+# pylint: disable=no-member
+# pylint: disable=missing-final-newline
+
 import pygame
 
-print("Starting pygame...")
 
-pygame.init()
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 60
+BACKGROUND_COLOR = (20, 20, 40)
+WINDOW_TITLE = "Don't mess with the stars"
 
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Don't mess with the stars")
 
-clock = pygame.time.Clock()
-running = True
+def main():
+    """Run the main game loop."""
+    pygame.init()
 
-print("Window should be open now.")
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption(WINDOW_TITLE)
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    clock = pygame.time.Clock()
+    running = True
 
-    screen.fill((20, 20, 40))
-    pygame.display.flip()
-    clock.tick(60)
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-pygame.quit()
-print("Closed.")
+        screen.fill(BACKGROUND_COLOR)
+        pygame.display.flip()
+        clock.tick(FPS)
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()

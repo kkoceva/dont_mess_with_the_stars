@@ -1,24 +1,66 @@
-import pygame
+"""Map logic for Don't Mess With the Stars."""
+
+from game.settings import TILE_SIZE
+
+
+FLOOR = "."
+WALL = "#"
+PLAYER_START = "P"
+PORTAL = "O"
+
+
+LEVEL_1 = [
+    "####################",
+    "#P.................#",
+    "#..#####...........#",
+    "#......#...........#",
+    "#......#....####...#",
+    "#......#...........#",
+    "#..###########.....#",
+    "#..................#",
+    "#.....####.........#",
+    "#.........#........#",
+    "#.........#...####.#",
+    "#..................#",
+    "#....######........#",
+    "#..................#",
+    "####################",
+]
+
 
 class GameMap:
-    BLACK = (0, 0, 0)
-    white = (200, 200, 200)
-    WINDOW_HEIGHT = 400
-    WINDOW_WIDTH = 400
+    """Represents and draws the game map."""
 
-    def __init__(self, row, col):
-        pass
+    def __init__(self, level, asset_manager):
+        """Initialize the map with a level and assets."""
+        self.level = level
+        self.asset_manager = asset_manager
 
-    def create_map(self, row, col):
-        pass
+    def draw(self, screen):
+        """Draw the map using textures."""
+        floor_texture = self.asset_manager.get_texture("floor")
+        wall_texture = self.asset_manager.get_texture("wall")
+        #portal_texture = self.asset_manager.get_texture("portal")
 
-    @staticmethod
-    def draw_grid(window_width, window_height, screen):
-        """Draw the game grid."""
-        white = (200, 200, 200)
-        block_size = 20
+        for row_index, row in enumerate(self.level):
+            for col_index, tile in enumerate(row):
+                position = (
+                    col_index * TILE_SIZE,
+                    row_index * TILE_SIZE,
+                )
 
-        for x in range(0, window_width, block_size):
-            for y in range(0, window_height, block_size):
-                rect = pygame.Rect(x, y, block_size, block_size)
-                pygame.draw.rect(screen, white, rect, 1)
+                screen.blit(floor_texture, position)
+
+                if tile == WALL:
+                    screen.blit(wall_texture, position)
+                #elif tile == PORTAL:
+                    #screen.blit(portal_texture, position)
+
+    def get_player_start_position(self):
+        """Return the player start position in pixels."""
+        for row_index, row in enumerate(self.level):
+            for col_index, tile in enumerate(row):
+                if tile == PLAYER_START:
+                    return col_index * TILE_SIZE, row_index * TILE_SIZE
+
+        return 0, 0

@@ -5,6 +5,8 @@
 
 import pygame
 
+from game.maps import GameMap
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -22,16 +24,16 @@ def main():
 
     clock = pygame.time.Clock()
     running = True
-
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
         screen.fill(BACKGROUND_COLOR)
+        GameMap.draw_grid(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
+        pygame.draw.circle(screen, (255, 0, 0), (100, 100), 30)
         pygame.display.flip()
         clock.tick(FPS)
-
     pygame.quit()
 
 

@@ -22,5 +22,5 @@ FPS = 60
 
 WINDOW_TITLE = "Don't mess with the stars"
 
-UI_BACKGROUND_COLOR = (18, 18, 35)
+UI_BACKGROUND_COLOR = (6, 6, 18)
 UI_TEXT_COLOR = (240, 240, 255)

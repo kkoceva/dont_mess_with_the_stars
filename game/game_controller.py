@@ -10,7 +10,6 @@ from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OF
 class GameController:
 
     def __init__(self):
-        """Initialize the game."""
         pygame.init()
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -26,7 +25,6 @@ class GameController:
         self.running = True
 
     def run(self):
-            """Run the main game loop."""
             while self.running:
                 self.handle_events()
                 self.draw()
@@ -35,13 +33,11 @@ class GameController:
             pygame.quit()
 
     def handle_events(self):
-        """Handle pygame events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
     def draw(self):
-        """Draw all game elements."""
         self.game_map.draw(self.screen)
         self.ui_manager.draw(self.screen)
 

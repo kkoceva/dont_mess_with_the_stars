@@ -1,5 +1,3 @@
-"""Asset loading and management."""
-
 # pylint: disable=no-member
 
 import pygame
@@ -11,11 +9,9 @@ class AssetManager:
     """Loads and stores game assets."""
 
     def __init__(self):
-        """Initialize the asset manager."""
         self.textures = {}
 
     def load_texture(self, name, file_name):
-        """Load, scale and store a texture."""
         image_path = TEXTURES_DIR / file_name
         image = pygame.image.load(image_path).convert_alpha()
 
@@ -25,7 +21,6 @@ class AssetManager:
         )
     
     def load_title(self, name, file_name):
-        """Load and store the title image without distorting it."""
         image_path = TEXTURES_DIR / file_name
         image = pygame.image.load(image_path).convert_alpha()
 
@@ -51,5 +46,4 @@ class AssetManager:
         print("Loaded textures:", self.textures.keys())
 
     def get_texture(self, name):
-        """Return a texture by name."""
         return self.textures[name]

@@ -11,7 +11,6 @@ def main():
 
     game = GameController()
     game.run()
-    """Run the main game loop."""
     pygame.init()
 
 

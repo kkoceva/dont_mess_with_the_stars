@@ -1,5 +1,3 @@
-"""Map logic for Don't Mess With the Stars."""
-
 from game.settings import MAP_OFFSET_X, MAP_OFFSET_Y, TILE_SIZE
 
 

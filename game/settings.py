@@ -24,3 +24,4 @@ WINDOW_TITLE = "Don't mess with the stars"
 
 UI_BACKGROUND_COLOR = (6, 6, 18)
 UI_TEXT_COLOR = (240, 240, 255)
+HUD_SEPARATOR_COLOR = (40, 20, 70)

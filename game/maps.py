@@ -1,5 +1,6 @@
-from game.settings import MAP_OFFSET_X, MAP_OFFSET_Y, TILE_SIZE
-
+from game.settings import MAP_OFFSET_Y, TILE_SIZE
+from game.game_data import Position
+from game.player import Player
 
 FLOOR = "."
 WALL = "#"
@@ -25,43 +26,43 @@ LEVEL_1 = [
     "####################",
 ]
 
-
 class GameMap:
-    """Represents and draws the game map."""
-
     def __init__(self, level, asset_manager):
-        """Initialize the map with a level and assets."""
         self.level = level
         self.asset_manager = asset_manager
 
     def draw(self, screen):
-        """Draw the map using textures."""
         floor_texture = self.asset_manager.get_texture("floor")
         wall_texture = self.asset_manager.get_texture("wall")
-        #portal_texture = self.asset_manager.get_texture("portal")
-
         for row_index, row in enumerate(self.level):
             for col_index, tile in enumerate(row):
                 position = (
                     col_index * TILE_SIZE,
                     MAP_OFFSET_Y + row_index * TILE_SIZE,
                 )
-
                 screen.blit(floor_texture, position)
-
                 if tile == WALL:
                     screen.blit(wall_texture, position)
-                #elif tile == PORTAL:
-                    #screen.blit(portal_texture, position)
 
     def get_player_start_position(self):
-        """Return the player start position in pixels."""
         for row_index, row in enumerate(self.level):
             for col_index, tile in enumerate(row):
                 if tile == PLAYER_START:
-                    return (
-                        col_index * TILE_SIZE,
-                        MAP_OFFSET_Y + row_index * TILE_SIZE,
-                    )
+                    return Position(col_index, row_index)
 
-        return 0, 80
+        return Position(0, 0)
+    
+    def draw_player(self, screen, player_texture):
+        tile_size_x, tile_size_y = self.get_player_start_position()
+        x = self.player.position.x * tile_size_x
+        y = self.player.position.y * tile_size_y
+        screen.blit(player_texture, (x, y))
+
+    def is_moving(self, position):
+        if position.y < 0 or position.y >= len(self.level):
+            return False
+
+        if position.x < 0 or position.x >= len(self.level[0]):
+            return False
+
+        return self.level[position.y][position.x] != WALL

@@ -38,10 +38,10 @@ class AssetManager:
         )
 
     def load_all(self):
-        """Load all required game assets."""
         self.load_texture("floor", "floor.png")
         self.load_texture("wall", "wall.png")
         self.load_title("title", "title.png")
+        self.load_texture("player", "player.png")
         #self.load_texture("portal", "portal.png")
         print("Loaded textures:", self.textures.keys())
 

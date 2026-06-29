@@ -1,16 +1,13 @@
-
-
+from game.game_data import Position, PlayerStatus, PlayerResources
 
 class Player:
-    def __init__(self, position_x, position_y):
-        self.position_x = position_x
-        self.position_y = position_y
+    def __init__(self, position):
+        self.position = position
+        self.status = PlayerStatus()
+        self.resources = PlayerResources()
 
     def move(self, move_x, move_y):
-        if self.check_new_position(move_x, move_y):
-            self.position_y = move_y
-            self.position_x = move_x
-
-    def check_new_position(self, new_position_x, new_position_y):
-
-        return True
+        if self.status.is_alive:
+            self.position.x += move_x
+            self.position.y += move_y
+    

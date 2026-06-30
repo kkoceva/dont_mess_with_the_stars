@@ -7,7 +7,7 @@ from game.game_data import Position
 from game.assets_manager import AssetManager
 from game.ui_manager import UIManager
 from game.maps import GameMap, LEVEL_1
-from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y, TILE_SIZE
+from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y, MAP_OFFSET_X, TILE_SIZE
 
 class GameController:
     def __init__(self):
@@ -29,7 +29,9 @@ class GameController:
 
     def run(self):
             while self.running:
+                dt = self.clock.tick(FPS)
                 self.handle_events()
+                self.update(dt)
                 self.draw()
                 self.clock.tick(FPS)
 
@@ -41,6 +43,8 @@ class GameController:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self.move_player(event)
+            elif event.type == pygame.KEYUP:
+                self.player.set_animation("player_idle")
 
     def move_player(self, event):
         move_x = 0
@@ -48,12 +52,16 @@ class GameController:
 
         if event.key == pygame.K_UP:
             move_y = -1
+            self.player.set_animation("player_walk_up")
         elif event.key == pygame.K_DOWN:
             move_y = 1
+            self.player.set_animation("player_walk_down")
         elif event.key == pygame.K_LEFT:
             move_x = -1
+            self.player.set_animation("player_walk_left")
         elif event.key == pygame.K_RIGHT:
             move_x = 1
+            self.player.set_animation("player_walk_right")
         else:
             return
 
@@ -72,12 +80,27 @@ class GameController:
       
         pygame.display.flip()
 
-    def draw_player(self):
-        player_texture = self.assets_manager.get_texture("player")
+    # def draw_player(self):
+    #     player_texture = self.assets_manager.get_texture("player")
 
-        x = self.player.position.x * TILE_SIZE
+    #     x = self.player.position.x * TILE_SIZE
+    #     y = MAP_OFFSET_Y + self.player.position.y * TILE_SIZE
+
+    #     self.screen.blit(player_texture, (x, y))
+
+    def draw_player(self):
+        frames = self.assets_manager.get_animation(self.player.current_animation)
+        player_frame = frames[self.player.frame_index]
+
+        x = MAP_OFFSET_X + self.player.position.x * TILE_SIZE
         y = MAP_OFFSET_Y + self.player.position.y * TILE_SIZE
 
-        self.screen.blit(player_texture, (x, y))
+        self.screen.blit(player_frame, (x, y))
+
+    def update(self, dt):
+        frames = self.assets_manager.get_animation(self.player.current_animation)
+        self.player.update_animation(dt, len(frames))
+
+        print(self.player.current_animation, self.player.frame_index)
 
     

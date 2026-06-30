@@ -8,7 +8,6 @@ from game.game_controller import GameController
 
 
 def main():
-
     game = GameController()
     game.run()
     pygame.init()

@@ -1,11 +1,12 @@
 from game.settings import MAP_OFFSET_Y, TILE_SIZE
 from game.game_data import Position
-from game.player import Player
 
 FLOOR = "."
 WALL = "#"
 PLAYER_START = "P"
 PORTAL = "O"
+ENEMY = "E"
+COLLECTIBLE = "C"
 
 
 LEVEL_1 = [

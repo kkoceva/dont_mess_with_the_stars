@@ -43,6 +43,7 @@ class AssetManager:
         self.load_texture("floor", "floor.png")
         self.load_texture("wall", "wall.png")
         self.load_title("title", "title.png")
+        self.load_title("menu_button", "menu_button.png")
         self.load_player_animations()
         ##self.load_texture("player", "player.png")
         #self.load_texture("portal", "portal.png")

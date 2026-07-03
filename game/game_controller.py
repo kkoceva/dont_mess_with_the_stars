@@ -1,8 +1,8 @@
 # pylint: disable=no-member
-
+import sys
 import pygame
 
-
+from game.menu import GameMenu
 from game.player import Player
 from game.enemy import Enemy
 from game.game_data import Position
@@ -19,6 +19,7 @@ class GameController:
         pygame.display.set_caption(WINDOW_TITLE)
         self.assets_manager = AssetManager()
         self.game_renderer = GameRenderer(self.screen)
+        self.game_menu = GameMenu(self.screen)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         start_position = self.game_map.get_player_start_position()
         self.player = Player(start_position)
@@ -26,17 +27,20 @@ class GameController:
         self.mars = Enemy(start_position, 1)
         self.venus = Enemy(start_position, 2)
         self.clock = pygame.time.Clock()
+        self.mouse = pygame.mouse.get_pos()
         self.running = True
 
     def run(self):
             while self.running:
                 dt = self.clock.tick(FPS)
+                # self.game_menu.start_menu()
                 self.handle_events()
                 self.game_renderer.update(dt, self.player)
                 self.game_renderer.draw(self.player)
                 self.clock.tick(FPS)
 
             pygame.quit()
+            sys.exit()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -46,6 +50,13 @@ class GameController:
                 self.move_player(event)
             elif event.type == pygame.KEYUP:
                 self.player.set_animation("player_idle")
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.game_menu.play_button.collidepoint(mouse):
+                         mouse = pygame.mouse.get_pos()
+
+                    # if quit_button.collidepoint(mouse):
+                    #     pygame.quit()
+                    #     sys.exit()
 
     def move_player(self, event):
         move_x = 0

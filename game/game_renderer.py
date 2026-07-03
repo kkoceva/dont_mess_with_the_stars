@@ -11,7 +11,6 @@ class GameRenderer:
         self.assets_manager.load_all()
         self.ui_manager = UIManager(self.assets_manager)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
-      
         self.screen = screen
 
     def draw(self, player):

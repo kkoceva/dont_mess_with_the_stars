@@ -1,15 +1,22 @@
 # pylint: disable=no-member
 import sys
 import pygame
-
+from enum import Enum
 from game.menu import GameMenu
 from game.player import Player
 from game.enemy import Enemy
 from game.game_data import Position
-from game.game_renderer import GameRenderer
 from game.maps import GameMap, LEVEL_1
+from game.game_renderer import GameRenderer
 from game.assets_manager import AssetManager
 from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y, MAP_OFFSET_X, TILE_SIZE
+
+class GameStateType(Enum):
+    MENU = "menu",
+    PLAYING = "Playing",
+    WIN = "win"
+    GAMEOVER = "game over"
+
 
 class GameController:
     def __init__(self):
@@ -19,7 +26,6 @@ class GameController:
         pygame.display.set_caption(WINDOW_TITLE)
         self.assets_manager = AssetManager()
         self.game_renderer = GameRenderer(self.screen)
-        self.game_menu = GameMenu(self.screen)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         start_position = self.game_map.get_player_start_position()
         self.player = Player(start_position)
@@ -29,34 +35,42 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.mouse = pygame.mouse.get_pos()
         self.running = True
+        self.state = GameStateType.MENU
+        self.game_menu = GameMenu(self.screen, self.start_game)
+    
+    def start_game(self):
+        self.state = GameStateType.PLAYING
 
     def run(self):
             while self.running:
                 dt = self.clock.tick(FPS)
-                # self.game_menu.start_menu()
-                self.handle_events()
-                self.game_renderer.update(dt, self.player)
-                self.game_renderer.draw(self.player)
+                events = pygame.event.get()
+                self.handle_events(events)
+                if self.state == GameStateType.MENU:
+                    self.game_menu.update(events)
+                    self.screen.fill((18, 18, 35))
+                    self.game_menu.draw()
+                elif self.state == GameStateType.PLAYING:
+                    self.game_renderer.update(dt, self.player)
+                    self.game_renderer.draw(self.player)
+                
                 self.clock.tick(FPS)
+                pygame.display.flip()
 
             pygame.quit()
             sys.exit()
 
-    def handle_events(self):
-        for event in pygame.event.get():
+    def handle_events(self, events):
+        for event in events:
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN:
-                self.move_player(event)
-            elif event.type == pygame.KEYUP:
-                self.player.set_animation("player_idle")
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.game_menu.play_button.collidepoint(mouse):
-                         mouse = pygame.mouse.get_pos()
-
-                    # if quit_button.collidepoint(mouse):
-                    #     pygame.quit()
-                    #     sys.exit()
+            if self.state == GameStateType.PLAYING:
+                if event.type == pygame.KEYDOWN:
+                    self.move_player(event)
+                elif event.type == pygame.KEYUP:
+                    self.player.set_animation("player_idle")
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.state = GameStateType.MENU
 
     def move_player(self, event):
         move_x = 0

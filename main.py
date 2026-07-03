@@ -2,7 +2,6 @@
 
 # pylint: disable=no-member, missing-final-newline
 
-import pygame
 
 from game.game_controller import GameController
 
@@ -10,7 +9,6 @@ from game.game_controller import GameController
 def main():
     game = GameController()
     game.run()
-    pygame.init()
 
 
 if __name__ == "__main__":

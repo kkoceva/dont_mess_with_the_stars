@@ -96,6 +96,6 @@ class GameController:
             self.player.position.y + move_y,
         )
 
-        if self.game_map.is_moving(new_position):
+        if self.game_map.is_tile_available(new_position):
             self.player.move(move_x, move_y)
     

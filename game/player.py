@@ -27,4 +27,8 @@ class Player:
         if self.animation_timer >= self.animation_speed:
             self.animation_timer = 0
             self.frame_index = (self.frame_index + 1) % frames_count
+
+    def update_stats():
+            return
+
     

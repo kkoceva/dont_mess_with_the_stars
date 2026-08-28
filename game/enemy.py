@@ -19,8 +19,6 @@ class Enemy:
         pass
 
 
-
-
 class Mercury(Enemy):
     def __init__(self, position):
         super().__init__(position)

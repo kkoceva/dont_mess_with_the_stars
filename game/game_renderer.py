@@ -29,6 +29,12 @@ class GameRenderer:
 
         self.screen.blit(player_frame, (x, y))
 
+    def draw_enemy(self, dt, enemy):
+        frames = self.assets_manager.get_animation(enemy.current_animation)
+        enemy.update_animation(dt, len(frames))
+
+        print(enemy.current_animation, enemy.frame_index)
+
     def update(self, dt, player):
         frames = self.assets_manager.get_animation(player.current_animation)
         player.update_animation(dt, len(frames))

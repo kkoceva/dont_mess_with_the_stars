@@ -74,6 +74,8 @@ class GameMap:
 
         return random.choice(available_positions)
 
+    def check_occupied_positions():
+        return
 
     def is_tile_available(self, position):
         if position.y < 0 or position.y >= len(self.level):

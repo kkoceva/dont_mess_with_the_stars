@@ -4,7 +4,7 @@ import pygame
 from enum import Enum
 from game.menu import GameMenu
 from game.player import Player
-from game.enemy import Enemy
+from game.enemy import Enemy, Mercury, Venus, Mars
 from game.game_data import Position
 from game.maps import GameMap, LEVEL_1
 from game.game_renderer import GameRenderer
@@ -28,10 +28,13 @@ class GameController:
         self.game_renderer = GameRenderer(self.screen)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         start_position = self.game_map.get_player_start_position()
+        mercury_position = self.game_map.get_enemy_start_position()
+        venus_position = self.game_map.get_enemy_start_position()
+        mars_position = self.game_map.get_enemy_start_position()
         self.player = Player(start_position)
-        self.mercury = Enemy(start_position, 0)
-        self.mars = Enemy(start_position, 1)
-        self.venus = Enemy(start_position, 2)
+        self.mercury = Mercury(mercury_position, 0)
+        self.mars = Mars(mars_position, 1)
+        self.venus = Venus(venus_position, 2)
         self.clock = pygame.time.Clock()
         self.mouse = pygame.mouse.get_pos()
         self.running = True

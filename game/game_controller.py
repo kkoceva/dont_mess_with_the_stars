@@ -56,7 +56,9 @@ class GameController:
                 elif self.state == GameStateType.PLAYING:
                     self.game_renderer.update(dt, self.player)
                     self.game_renderer.update(dt, self.mercury)
-                    self.game_renderer.draw(self.player, self.mercury)
+                    self.game_renderer.update(dt, self.venus)
+                    self.game_renderer.update(dt, self.mars)
+                    self.game_renderer.draw(self.player, self.mercury, self.venus, self.mars)
 
                 pygame.display.flip()
 
@@ -71,10 +73,9 @@ class GameController:
                 if event.type == pygame.KEYDOWN:
                     self.move_player(event)
                 elif event.type == pygame.KEYUP:
-                    self.player.set_animation("player_idle")
+                    self.player.set_idle_animation()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.state = GameStateType.MENU
-            self.mercury.set_animation("mercury_idle")
 
     def move_player(self, event):
         move_x = 0
@@ -82,16 +83,12 @@ class GameController:
 
         if event.key == pygame.K_UP:
             move_y = -1
-            self.player.set_animation("player_walk_up")
         elif event.key == pygame.K_DOWN:
             move_y = 1
-            self.player.set_animation("player_walk_down")
         elif event.key == pygame.K_LEFT:
             move_x = -1
-            self.player.set_animation("player_walk_left")
         elif event.key == pygame.K_RIGHT:
             move_x = 1
-            self.player.set_animation("player_walk_right")
         else:
             return
 

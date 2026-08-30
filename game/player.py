@@ -14,6 +14,20 @@ class Player:
         if self.status.is_alive:
             self.position.x += move_x
             self.position.y += move_y
+            self.set_move_animation(move_x, move_y)
+
+    def set_move_animation(self, move_x, move_y):
+        if move_y < 0:
+            self.set_animation("player_walk_up")
+        elif move_y > 0:
+            self.set_animation("player_walk_down")
+        elif move_x < 0:
+            self.set_animation("player_walk_left")
+        elif move_x > 0:
+            self.set_animation("player_walk_right")
+
+    def set_idle_animation(self):
+        self.set_animation("player_idle")
 
     def set_animation(self, animation_name):
         if self.current_animation != animation_name:

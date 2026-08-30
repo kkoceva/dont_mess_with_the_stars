@@ -44,25 +44,26 @@ class AssetManager:
         self.load_texture("wall", "wall.png")
         self.load_title("title", "title.png")
         self.load_title("menu_button", "menu_button.png")
-        self.load_player_animations()
-        self.load_mercury_animations()
-        ##self.load_texture("player", "player.png")
+        self.load_animations("player")
+        self.load_animations("mercury")
+        self.load_animations("venus")
+        self.load_animations("mars")
         #self.load_texture("portal", "portal.png")
         print("Loaded textures:", self.textures.keys())
 
     def get_texture(self, name):
         return self.textures[name]
     
-    def load_player_animations(self):
-        sheet = SpriteSheet(TEXTURES_DIR / "player_spritesheet.png")
+    def load_animations(self, spritesheet_name):
+        sheet = SpriteSheet(TEXTURES_DIR / f"{spritesheet_name}_spritesheet.png")
 
-        frame_width = 64
-        frame_height = 64
+        frame_width = 48
+        frame_height = 48
         frame_count = 4
 
         target_size = (TILE_SIZE, TILE_SIZE)
 
-        self.animations["player_idle"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_idle"] = sheet.get_row_frames(
             row=0,
             frame_count=frame_count,
             frame_width=frame_width,
@@ -70,63 +71,25 @@ class AssetManager:
             target_size=target_size,
         )
 
-        self.animations["player_walk_down"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_walk_down"] = sheet.get_row_frames(
             1, frame_count, frame_width, frame_height, target_size
         )
 
-        self.animations["player_walk_left"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_walk_left"] = sheet.get_row_frames(
             2, frame_count, frame_width, frame_height, target_size
         )
 
-        self.animations["player_walk_right"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_walk_right"] = sheet.get_row_frames(
             3, frame_count, frame_width, frame_height, target_size
         )
 
-        self.animations["player_walk_up"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_walk_up"] = sheet.get_row_frames(
             4, frame_count, frame_width, frame_height, target_size
         )
 
-        self.animations["player_stunned"] = sheet.get_row_frames(
+        self.animations[f"{spritesheet_name}_stunned"] = sheet.get_row_frames(
             5, frame_count, frame_width, frame_height, target_size
         )
-
-    def load_mercury_animations(self):
-        sheet = SpriteSheet(TEXTURES_DIR / "mercury_spritesheet.png")
-
-        frame_width = 64
-        frame_height = 64
-        frame_count = 4
-
-        target_size = (TILE_SIZE, TILE_SIZE)
-
-        self.animations["mercury_idle"] = sheet.get_row_frames(
-            row=0,
-            frame_count=frame_count,
-            frame_width=frame_width,
-            frame_height=frame_height,
-            target_size=target_size,
-        )
-
-        self.animations["mercury_walk_down"] = sheet.get_row_frames(
-            1, frame_count, frame_width, frame_height, target_size
-        )
-
-        self.animations["mercury_walk_left"] = sheet.get_row_frames(
-            2, frame_count, frame_width, frame_height, target_size
-        )
-
-        self.animations["mercury_walk_right"] = sheet.get_row_frames(
-            3, frame_count, frame_width, frame_height, target_size
-        )
-
-        self.animations["mercury_walk_up"] = sheet.get_row_frames(
-            4, frame_count, frame_width, frame_height, target_size
-        )
-
-        self.animations["mercury_stunned"] = sheet.get_row_frames(
-            5, frame_count, frame_width, frame_height, target_size
-        )
-
 
     def get_animation(self, name):
         return self.animations[name]

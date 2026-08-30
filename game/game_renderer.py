@@ -13,14 +13,13 @@ class GameRenderer:
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         self.screen = screen
 
-    def draw(self, player, mercury):
+    def draw(self, player, *enemies):
         self.game_map.draw(self.screen)
         self.draw_player(player)
-        self.draw_enemy(mercury)
+        for enemy in enemies:
+            self.draw_enemy(enemy)
       
         self.ui_manager.draw(self.screen)
-      
-        pygame.display.flip()
 
     def draw_player(self, player):
         frames = self.assets_manager.get_animation(player.current_animation)

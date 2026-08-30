@@ -30,7 +30,6 @@ class UIManager:
             3
         )
 
-
         pygame.draw.rect(screen, UI_BACKGROUND_COLOR, panel_rect)
         pygame.draw.rect(screen, HUD_SEPARATOR_COLOR, panel_hud_border_rect)
         title_texture = self.assets_manager.get_texture("title")

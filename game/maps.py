@@ -57,8 +57,8 @@ class GameMap:
         return Position(1, 1)
     
     def get_enemy_start_position(self):
-        if occupied_positions is None:
-            occupied_positions = []
+        if  self.occupied_positions is None:
+            self.occupied_positions = []
 
         available_positions = []
 
@@ -66,7 +66,7 @@ class GameMap:
             for x, _ in enumerate(row):
                 position = Position(x, y)
 
-                if self.is_tile_available(position, occupied_positions):
+                if self.is_tile_available(position):
                     available_positions.append(position)
 
         if not available_positions:

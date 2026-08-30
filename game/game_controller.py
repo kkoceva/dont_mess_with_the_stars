@@ -32,9 +32,9 @@ class GameController:
         venus_position = self.game_map.get_enemy_start_position()
         mars_position = self.game_map.get_enemy_start_position()
         self.player = Player(start_position)
-        self.mercury = Mercury(mercury_position, 0)
-        self.mars = Mars(mars_position, 1)
-        self.venus = Venus(venus_position, 2)
+        self.mercury = Mercury(mercury_position)
+        self.mars = Mars(mars_position)
+        self.venus = Venus(venus_position)
         self.clock = pygame.time.Clock()
         self.mouse = pygame.mouse.get_pos()
         self.running = True
@@ -55,9 +55,9 @@ class GameController:
                     self.game_menu.draw()
                 elif self.state == GameStateType.PLAYING:
                     self.game_renderer.update(dt, self.player)
-                    self.game_renderer.draw(self.player)
-                
-                self.clock.tick(FPS)
+                    self.game_renderer.update(dt, self.mercury)
+                    self.game_renderer.draw(self.player, self.mercury)
+
                 pygame.display.flip()
 
             pygame.quit()
@@ -74,6 +74,7 @@ class GameController:
                     self.player.set_animation("player_idle")
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.state = GameStateType.MENU
+            self.mercury.set_animation("mercury_idle")
 
     def move_player(self, event):
         move_x = 0

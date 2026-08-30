@@ -13,9 +13,11 @@ class GameRenderer:
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         self.screen = screen
 
-    def draw(self, player):
+    def draw(self, player, mercury):
         self.game_map.draw(self.screen)
         self.draw_player(player)
+        self.draw_enemy(mercury)
+      
         self.ui_manager.draw(self.screen)
       
         pygame.display.flip()
@@ -29,11 +31,14 @@ class GameRenderer:
 
         self.screen.blit(player_frame, (x, y))
 
-    def draw_enemy(self, dt, enemy):
+    def draw_enemy(self, enemy):
         frames = self.assets_manager.get_animation(enemy.current_animation)
-        enemy.update_animation(dt, len(frames))
+        enemy_frame = frames[enemy.frame_index]
 
-        print(enemy.current_animation, enemy.frame_index)
+        x = MAP_OFFSET_X + enemy.position.x * TILE_SIZE
+        y = MAP_OFFSET_Y + enemy.position.y * TILE_SIZE
+
+        self.screen.blit(enemy_frame, (x, y))
 
     def update(self, dt, player):
         frames = self.assets_manager.get_animation(player.current_animation)

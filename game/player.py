@@ -12,6 +12,7 @@ class Player:
         self.move_interval = 150
         self.slow_timer = 0
         self.move_timer = 150
+        self.hit_cooldown = 0
 
     def move(self, move_x, move_y):
         if self.status.is_alive:
@@ -32,6 +33,12 @@ class Player:
         if self.slow_timer <= 0:
             self.slow_timer = 0
             self.move_interval = 150
+
+        if self.hit_cooldown > 0:
+            self.hit_cooldown -= dt
+
+            if self.hit_cooldown < 0:
+                self.hit_cooldown = 0
 
     def can_move(self):
         return self.move_timer >= self.move_interval
@@ -64,5 +71,24 @@ class Player:
         if self.animation_timer >= self.animation_speed:
             self.animation_timer = 0
             self.frame_index = (self.frame_index + 1) % frames_count
+
+    def take_damage(self, damage):
+        if self.hit_cooldown > 0:
+            return
+
+        self.status.hp -= damage
+        self.hit_cooldown = 1000
+
+        if self.status.hp > 0:
+            return
+
+        self.status.lives -= 1
+
+        if self.status.lives > 0:
+            self.status.hp = self.status.max_hp
+        else:
+            self.status.hp = 0
+            self.status.lives = 0
+            self.status.is_alive = False
 
     

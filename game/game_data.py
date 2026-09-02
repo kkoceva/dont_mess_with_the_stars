@@ -3,7 +3,7 @@ from dataclasses import dataclass
 @dataclass
 class PlayerResources:
     fragments:int = 0
-    requiered_fragments:int = 3
+    required_fragments: int = 3
     energy:int = 0
     required_energy:int = 100
 

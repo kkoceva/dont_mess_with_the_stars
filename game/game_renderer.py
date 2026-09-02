@@ -42,7 +42,5 @@ class GameRenderer:
     def update(self, dt, player):
         frames = self.assets_manager.get_animation(player.current_animation)
         player.update_animation(dt, len(frames))
-
-        print(player.current_animation, player.frame_index)
     
     

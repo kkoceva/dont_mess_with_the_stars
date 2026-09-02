@@ -60,6 +60,7 @@ class GameController:
     def run(self):
             while self.running:
                 dt = self.clock.tick(FPS)
+
                 if self.state == GameStateType.PLAYING:
                     self.player.update_movement(dt)
 
@@ -117,22 +118,58 @@ class GameController:
             self.player.position.y + move_y,
         )
 
-        if self.game_map.is_tile_available(new_position):
-            self.player.move(move_x, move_y)
+        if not self.game_map.is_tile_available(new_position):
+            return
+
+        enemy = self.get_enemy_at(new_position)
+
+        if enemy is not None:
+            self.handle_enemy_collision(enemy)
             self.player.reset_move_timer()
+            return
+
+        self.player.move(move_x, move_y)
+        self.player.reset_move_timer()
 
     def update_game(self):
         current_time = pygame.time.get_ticks()
+
         if (current_time - self.last_enemy_move_time < self.enemy_move_delay):
             return
 
         for enemy in self.enemies:
             enemy.update_movement(self.player.position)
 
-        if self.venus.should_apply_effect(self.player.position):
+            if (
+                enemy.position.x == self.player.position.x
+                and enemy.position.y == self.player.position.y
+            ):
+                self.handle_enemy_collision(enemy)
+
+        if self.venus.should_apply_effect(
+            self.player.position
+        ):
             self.player.apply_slow(2000)
 
         self.last_enemy_move_time = current_time
+
+    def handle_enemy_collision(self, enemy):
+        self.player.take_damage(enemy.damage)
+
+        print(f"Здраве да е: {self.player.status.hp}, "f"Живот: {self.player.status.lives}")
+
+        if not self.player.status.is_alive:
+            self.state = GameStateType.GAMEOVER
+
+    def get_enemy_at(self, position):
+        for enemy in self.enemies:
+            if (
+                enemy.position.x == position.x
+                and enemy.position.y == position.y
+            ):
+                return enemy
+
+        return None
 
             
     

@@ -57,17 +57,20 @@ class Enemy:
 
 class Mercury(Enemy):
     def __init__(self, position, path_finder):
-        super().__init__(position, "mercury_idle", path_finder, 10)
+        super().__init__(position, "mercury_idle", path_finder, 100)
+        self.damage = 10
 
 
 class Mars(Enemy):
     def __init__(self, position, path_finder):
-        super().__init__(position, "mars_idle", path_finder, 5)
+        super().__init__(position, "mars_idle", path_finder, 50)
+        self.damage = 20
 
 class Venus(Enemy):
     def __init__(self, position, path_finder):
-        super().__init__(position, "venus_idle", path_finder, 7)
+        super().__init__(position, "venus_idle", path_finder, 70)
         self.slow_range = 2
+        self.damage = 5
 
     def should_apply_effect(self, player_position):
         return self.get_distance(player_position) <= self.slow_range

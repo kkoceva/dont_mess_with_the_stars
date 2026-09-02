@@ -15,7 +15,7 @@ class UIManager:
         self.font = pygame.font.SysFont(None, 28)
         self.assets_manager = assets_manager
 
-    def draw(self, screen):
+    def draw(self, screen, player):
         panel_rect = pygame.Rect(
             0,
             0,
@@ -34,10 +34,10 @@ class UIManager:
         pygame.draw.rect(screen, HUD_SEPARATOR_COLOR, panel_hud_border_rect)
         title_texture = self.assets_manager.get_texture("title")
         menu_button = self.assets_manager.get_texture("menu_button")
-        self.draw_text(screen, "Lives: 3", 180, 28)
-        self.draw_text(screen, "HP: 100", 300, 28)
-        self.draw_text(screen, "Energy: 0", 440, 28)
-        self.draw_text(screen, "Fragments: 0/3", 600, 28)
+        self.draw_text(screen, f"Lives: {player.status.lives}", 180, 28)
+        self.draw_text(screen, f"HP: {player.status.hp}", 300, 28)
+        self.draw_text(screen, f"Energy: {player.resources.energy}", 440, 28)
+        self.draw_text(screen, f"Fragments: {player.resources.fragments}/{player.resources.required_fragments}", 600, 28)
         self.draw_title(screen, title_texture, 10, 10)
         self.draw_title(screen, menu_button, 860, 10)
 

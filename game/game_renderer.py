@@ -19,7 +19,7 @@ class GameRenderer:
         for enemy in enemies:
             self.draw_enemy(enemy)
       
-        self.ui_manager.draw(self.screen)
+        self.ui_manager.draw(self.screen, player)
 
     def draw_player(self, player):
         frames = self.assets_manager.get_animation(player.current_animation)

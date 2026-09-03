@@ -6,7 +6,8 @@ class CollectibleType(Enum):
     CONSTELLATION_FRAGMENT = 2
 
 class Collectible:
-    def __init__(self, position, collectible_type, value = 1):
+    def __init__(self, position, collectible_type, texture_name, value=1,):
         self.position = position
         self.collectible_type = collectible_type
+        self.texture_name = texture_name
         self.value = value

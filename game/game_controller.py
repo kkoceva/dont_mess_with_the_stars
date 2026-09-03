@@ -203,50 +203,47 @@ class GameController:
         ]
 
         for _ in range(8):
-            position = (
-                self.game_map.get_random_available_position(
-                    occupied_positions
-                )
+            position = self.game_map.get_random_available_position(
+                occupied_positions
             )
 
             self.collectibles.append(
                 Collectible(
                     position,
                     CollectibleType.STAR_CRYSTAL,
-                    value=10
+                    "star_crystal",
+                    value=10,
                 )
             )
 
             occupied_positions.append(position)
 
         for _ in range(2):
-            position = (
-                self.game_map.get_random_available_position(
-                    occupied_positions
-                )
+            position = self.game_map.get_random_available_position(
+                occupied_positions
             )
 
             self.collectibles.append(
                 Collectible(
                     position,
                     CollectibleType.ZODIAC_SIGN,
-                    value=25
+                    "zodiac_sign",
+                    value=25,
                 )
             )
 
             occupied_positions.append(position)
 
-        for _ in range(3):
-            position = (
-                self.game_map.get_random_available_position(
-                    occupied_positions
-                )
+        for fragment_number in range(1, 4):
+            position = self.game_map.get_random_available_position(
+                occupied_positions
             )
 
             self.collectibles.append(
                 Collectible(
                     position,
-                    CollectibleType.CONSTELLATION_FRAGMENT
+                    CollectibleType.CONSTELLATION_FRAGMENT,
+                    f"constellation_fragment_{fragment_number}",
                 )
             )
 

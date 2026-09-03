@@ -23,21 +23,28 @@ class Enemy:
             self.animation_timer = 0
             self.frame_index = (self.frame_index + 1) % frames_count
 
-    def update_movement(self, player_position):
+    def update_movement(self, player_position, occupied_position):
         if self.should_chase(player_position):
-            self.move_towards(player_position)
+            self.move_towards(player_position, occupied_position)
 
     def should_chase(self, player_position):
         return self.get_distance(player_position)
 
-    def move_towards(self, target_position):
+    def move_towards(self, target_position, occupied_positions):
         path = self.path_finder.find_path(
             self.position,
             target_position
         )
 
-        if len(path) > 1:
-            self.position = path[1]
+        if len(path) <= 1:
+            return
+
+        next_position = path[1]
+
+        if (next_position.x, next_position.y) in occupied_positions:
+            return
+
+        self.position = next_position
 
     def move(self, move_x, move_y):
         if self.status.is_alive:
@@ -50,9 +57,6 @@ class Enemy:
 
     def check_target_in_range(self, target_position, range):
         return super().get_distance(target_position) <= range
-
-    def update_stats():
-        pass
 
 
 class Mercury(Enemy):

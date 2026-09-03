@@ -121,7 +121,7 @@ class GameController:
         if not self.game_map.is_tile_available(new_position):
             return
 
-        enemy = self.get_enemy_at(new_position)
+        enemy = self.get_enemy_position(new_position)
 
         if enemy is not None:
             self.handle_enemy_collision(enemy)
@@ -134,11 +134,23 @@ class GameController:
     def update_game(self):
         current_time = pygame.time.get_ticks()
 
-        if (current_time - self.last_enemy_move_time < self.enemy_move_delay):
+        if (
+            current_time - self.last_enemy_move_time
+            < self.enemy_move_delay
+        ):
             return
 
         for enemy in self.enemies:
-            enemy.update_movement(self.player.position)
+            occupied_positions = {
+                (other_enemy.position.x, other_enemy.position.y)
+                for other_enemy in self.enemies
+                if other_enemy is not enemy
+            }
+
+            enemy.update_movement(
+                self.player.position,
+                occupied_positions
+            )
 
             if (
                 enemy.position.x == self.player.position.x
@@ -161,7 +173,7 @@ class GameController:
         if not self.player.status.is_alive:
             self.state = GameStateType.GAMEOVER
 
-    def get_enemy_at(self, position):
+    def get_enemy_position(self, position):
         for enemy in self.enemies:
             if (
                 enemy.position.x == position.x
@@ -170,6 +182,8 @@ class GameController:
                 return enemy
 
         return None
+
+    
 
             
     

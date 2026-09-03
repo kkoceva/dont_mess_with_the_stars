@@ -56,9 +56,8 @@ class GameMap:
 
         return Position(1, 1)
     
-    def get_enemy_start_position(self):
-        if  self.occupied_positions is None:
-            self.occupied_positions = []
+    def get_enemy_start_position(self,  occupied_positions=None):
+        occupied_positions = occupied_positions or []
 
         available_positions = []
 
@@ -66,11 +65,11 @@ class GameMap:
             for x, _ in enumerate(row):
                 position = Position(x, y)
 
-                if self.is_tile_available(position):
+                if (
+                    self.is_tile_available(position)
+                    and position not in occupied_positions
+                ):
                     available_positions.append(position)
-
-        if not available_positions:
-            raise ValueError("No available position for enemy.")
 
         return random.choice(available_positions)
 

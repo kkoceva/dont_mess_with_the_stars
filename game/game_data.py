@@ -7,6 +7,24 @@ class PlayerResources:
     energy:int = 0
     required_energy:int = 100
 
+    def add_fragment(self):
+        self.fragments = min(
+            self.fragments + 1,
+            self.required_fragments
+        )
+
+    def add_energy(self, amount):
+        self.energy = min(
+            self.energy + amount,
+            self.required_energy
+        )
+
+    def has_required_resources(self):
+        return (
+            self.fragments >= self.required_fragments
+            and self.energy >= self.required_energy
+        )
+
 @dataclass
 class PlayerStatus:
     hp:int = 100

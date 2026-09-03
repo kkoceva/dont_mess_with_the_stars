@@ -56,34 +56,32 @@ class GameMap:
 
         return Position(1, 1)
     
-    def get_enemy_start_position(self,  occupied_positions=None):
-        occupied_positions = occupied_positions or []
+    def get_enemy_start_position(
+        self,
+        occupied_positions=None
+    ):
+        return self.get_random_available_position(
+            occupied_positions
+        )
 
+    def get_random_available_position(
+        self,
+        occupied_positions=None
+    ):
+        occupied_positions = occupied_positions or []
         available_positions = []
 
         for y, row in enumerate(self.level):
-            for x, _ in enumerate(row):
+            for x, tile in enumerate(row):
                 position = Position(x, y)
 
                 if (
-                    self.is_tile_available(position)
+                    tile == FLOOR
                     and position not in occupied_positions
                 ):
                     available_positions.append(position)
 
+        if not available_positions:
+            raise ValueError("There are no available positions.")
+
         return random.choice(available_positions)
-
-    def check_occupied_positions():
-        return
-
-    def is_tile_available(self, position):
-        if position.y < 0 or position.y >= len(self.level):
-            return False
-
-        if position.x < 0 or position.x >= len(self.level[0]):
-            return False
-
-        return self.level[position.y][position.x] != WALL
-    
-    def is_occupied(self, position):
-        pass

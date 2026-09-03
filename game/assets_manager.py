@@ -42,6 +42,18 @@ class AssetManager:
     def load_all(self):
         self.load_texture("floor", "floor.png")
         self.load_texture("wall", "wall.png")
+        self.load_texture(
+        "constellation_fragment_1",
+        "constellation_fragment_1.png",
+        )
+        self.load_texture(
+            "constellation_fragment_2",
+            "constellation_fragment_2.png",
+        )
+        self.load_texture(
+            "constellation_fragment_3",
+            "constellation_fragment_3.png",
+        )
         self.load_title("title", "title.png")
         self.load_title("menu_button", "menu_button.png")
         self.load_animations("player")

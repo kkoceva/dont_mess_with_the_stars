@@ -11,6 +11,7 @@ from game.game_renderer import GameRenderer
 from game.assets_manager import AssetManager
 from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y, MAP_OFFSET_X, TILE_SIZE
 from game.path_finder import PathFinder
+from game.collectible import (Collectible, CollectibleType,)
 
 class GameStateType(Enum):
     MENU = "menu",
@@ -45,6 +46,8 @@ class GameController:
             self.mars
         ]
 
+        self.collectibles = []
+        self.create_collectibles()
         self.enemy_move_delay = 500
         self.last_enemy_move_time = 0
 
@@ -76,7 +79,7 @@ class GameController:
                     self.game_renderer.update(dt, self.venus)
                     self.game_renderer.update(dt, self.mars)
                     self.update_game()
-                    self.game_renderer.draw(self.player, self.mercury, self.venus, self.mars)
+                    self.game_renderer.draw(self.player, self.mercury, self.venus, self.mars, self.collectibles)
 
                 pygame.display.flip()
 
@@ -131,6 +134,13 @@ class GameController:
         self.player.move(move_x, move_y)
         self.player.reset_move_timer()
 
+        collectible = self.get_collectible_position(
+            self.player.position
+        )
+
+        if collectible is not None:
+            self.collect_item(collectible)
+
     def update_game(self):
         current_time = pygame.time.get_ticks()
 
@@ -183,7 +193,85 @@ class GameController:
 
         return None
 
-    
+    def create_collectibles(self):
+        occupied_positions = [
+            self.player.position,
+            *[
+                enemy.position
+                for enemy in self.enemies
+            ],
+        ]
 
-            
-    
+        for _ in range(8):
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
+            )
+
+            self.collectibles.append(
+                Collectible(
+                    position,
+                    CollectibleType.STAR_CRYSTAL,
+                    value=10
+                )
+            )
+
+            occupied_positions.append(position)
+
+        for _ in range(2):
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
+            )
+
+            self.collectibles.append(
+                Collectible(
+                    position,
+                    CollectibleType.ZODIAC_SIGN,
+                    value=25
+                )
+            )
+
+            occupied_positions.append(position)
+
+        for _ in range(3):
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
+            )
+
+            self.collectibles.append(
+                Collectible(
+                    position,
+                    CollectibleType.CONSTELLATION_FRAGMENT
+                )
+            )
+
+            occupied_positions.append(position)
+
+    def get_collectible_position(self, position):
+        for collectible in self.collectibles:
+            if collectible.position == position:
+                return collectible
+
+        return None
+
+    def collect_item(self, collectible):
+        if collectible.collectible_type in (
+            CollectibleType.STAR_CRYSTAL,
+            CollectibleType.ZODIAC_SIGN,
+        ):
+            self.player.resources.add_energy(
+                collectible.value
+            )
+
+        elif (
+            collectible.collectible_type
+            == CollectibleType.CONSTELLATION_FRAGMENT
+        ):
+            self.player.resources.add_fragment()
+
+        self.collectibles.remove(collectible)

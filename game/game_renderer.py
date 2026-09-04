@@ -13,42 +13,27 @@ class GameRenderer:
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         self.screen = screen
 
-    def draw(self, player, *enemies, collectibles):
+    def draw(self, player, collectibles, *enemies):
         self.game_map.draw(self.screen)
-        self.draw_collectibles(collectibles)
-        self.draw_player(player)
+        ##self.draw_game_object(collectibles)
+        self.draw_game_object(player)
         for enemy in enemies:
-            self.draw_enemy(enemy)
+            self.draw_game_object(enemy)
+
+        #for collectible in collectibles:
+         #   self.draw_game_object(collectible)
       
         self.ui_manager.draw(self.screen, player)
 
-    def draw_player(self, player):
-        frames = self.assets_manager.get_animation(player.current_animation)
-        player_frame = frames[player.frame_index]
+    def draw_game_object(self, game_object):
+        frames = self.assets_manager.get_animation(game_object.current_animation)
+        game_object_frame = frames[game_object.frame_index]
 
-        x = MAP_OFFSET_X + player.position.x * TILE_SIZE
-        y = MAP_OFFSET_Y + player.position.y * TILE_SIZE
+        x = MAP_OFFSET_X + game_object.position.x * TILE_SIZE
+        y = MAP_OFFSET_Y + game_object.position.y * TILE_SIZE
 
-        self.screen.blit(player_frame, (x, y))
-
-    def draw_enemy(self, enemy):
-        frames = self.assets_manager.get_animation(enemy.current_animation)
-        enemy_frame = frames[enemy.frame_index]
-
-        x = MAP_OFFSET_X + enemy.position.x * TILE_SIZE
-        y = MAP_OFFSET_Y + enemy.position.y * TILE_SIZE
-
-        self.screen.blit(enemy_frame, (x, y))
-
-    def draw_collectibles(self, collectibles):
-        frames = self.assets_manager.get_animation(collectibles.current_animation)
-        enemy_frame = frames[collectibles.frame_index]
-
-        x = MAP_OFFSET_X + collectibles.position.x * TILE_SIZE
-        y = MAP_OFFSET_Y + collectibles.position.y * TILE_SIZE
-
-        self.screen.blit(enemy_frame, (x, y))
-
+        self.screen.blit(game_object_frame, (x, y))
+   
     def update(self, dt, player):
         frames = self.assets_manager.get_animation(player.current_animation)
         player.update_animation(dt, len(frames))

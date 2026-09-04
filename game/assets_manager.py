@@ -54,17 +54,39 @@ class AssetManager:
             "constellation_fragment_3",
             "constellation_fragment_3.png",
         )
+        self.load_texture("star_crystal_1","star_crystal.png")
+        self.load_texture("star_crystal", "star_crystal.png")
         self.load_title("title", "title.png")
         self.load_title("menu_button", "menu_button.png")
         self.load_animations("player")
         self.load_animations("mercury")
         self.load_animations("venus")
         self.load_animations("mars")
-        #self.load_texture("portal", "portal.png")
-        print("Loaded textures:", self.textures.keys())
+        self.load_portal_animations("portal")
+
 
     def get_texture(self, name):
         return self.textures[name]
+
+    def load_portal_animations(self, portal_spritesheet):
+        sheet = SpriteSheet(TEXTURES_DIR / f"{portal_spritesheet}_spritesheet.png")
+        frame_width = 48
+        frame_height = 48
+        frame_count = 4
+
+        target_size = (TILE_SIZE, TILE_SIZE)
+        
+        self.animations[f"{portal_spritesheet}_moving"] = sheet.get_row_frames(
+            row=0,
+            frame_count=frame_count,
+            frame_width=frame_width,
+            frame_height=frame_height,
+            target_size=target_size,
+        )
+
+        self.animations[f"{portal_spritesheet}_walk_down"] = sheet.get_row_frames(
+            1, frame_count, frame_width, frame_height, target_size
+        )
     
     def load_animations(self, spritesheet_name):
         sheet = SpriteSheet(TEXTURES_DIR / f"{spritesheet_name}_spritesheet.png")
@@ -102,6 +124,7 @@ class AssetManager:
         self.animations[f"{spritesheet_name}_stunned"] = sheet.get_row_frames(
             5, frame_count, frame_width, frame_height, target_size
         )
+
 
     def get_animation(self, name):
         return self.animations[name]

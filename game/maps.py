@@ -49,20 +49,14 @@ class GameMap:
                     screen.blit(wall_texture, position)
 
     def get_player_start_position(self):
-        # for row_index, row in enumerate(self.level):
-        #     for col_index, tile in enumerate(row):
-        #         if tile == PLAYER_START:
-        #             return Position(col_index, row_index)
 
         return Position(1, 1)
     
-    def get_enemy_start_position(
-        self,
-        occupied_positions=None
-    ):
-        return self.get_random_available_position(
-            occupied_positions
-        )
+    def get_enemy_start_position(self, occupied_positions = None):
+        return self.get_random_available_position(occupied_positions)
+
+    def get_collectible_random_position(self, occupied_positions = None):
+        return self.get_random_available_position(occupied_positions)
 
     def get_random_available_position(
         self,
@@ -85,3 +79,12 @@ class GameMap:
             raise ValueError("There are no available positions.")
 
         return random.choice(available_positions)
+
+    def is_tile_available(self, position):
+        if position.y < 0 or position.y >= len(self.level):
+            return False
+
+        if position.x < 0 or position.x >= len(self.level[0]):
+            return False
+
+        return self.level[position.y][position.x] == FLOOR

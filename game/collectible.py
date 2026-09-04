@@ -1,4 +1,5 @@
 from enum import Enum
+from game.game_data import Position
 
 class CollectibleType(Enum):
     STAR_CRYSTAL = 0
@@ -6,8 +7,13 @@ class CollectibleType(Enum):
     CONSTELLATION_FRAGMENT = 2
 
 class Collectible:
-    def __init__(self, position, collectible_type, texture_name, value=1,):
+    def __init__(
+        self, position: Position, collectible_type: CollectibleType, collectible_name, value: int):
         self.position = position
         self.collectible_type = collectible_type
-        self.texture_name = texture_name
+        self.collectible_name = collectible_name
         self.value = value
+        self.is_collected = False
+
+    def collect(self):
+        self.is_collected = True

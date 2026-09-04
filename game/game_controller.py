@@ -62,30 +62,30 @@ class GameController:
         self.state = GameStateType.PLAYING
 
     def run(self):
-            while self.running:
-                dt = self.clock.tick(FPS)
+        while self.running:
+            dt = self.clock.tick(FPS)
 
-                if self.state == GameStateType.PLAYING:
-                    self.player.update_movement(dt)
+            if self.state == GameStateType.PLAYING:
+                self.player.update_movement(dt)
 
-                events = pygame.event.get()
-                self.handle_events(events)
-                if self.state == GameStateType.MENU:
-                    self.game_menu.update(events)
-                    self.screen.fill((18, 18, 35))
-                    self.game_menu.draw()
-                elif self.state == GameStateType.PLAYING:
-                    self.game_renderer.update(dt, self.player)
-                    self.game_renderer.update(dt, self.mercury)
-                    self.game_renderer.update(dt, self.venus)
-                    self.game_renderer.update(dt, self.mars)
-                    self.update_game()
-                    self.game_renderer.draw(self.player, self.mercury, self.venus, self.mars, self.collectibles)
+            events = pygame.event.get()
+            self.handle_events(events)
+            if self.state == GameStateType.MENU:
+                self.game_menu.update(events)
+                self.screen.fill((18, 18, 35))
+                self.game_menu.draw()
+            elif self.state == GameStateType.PLAYING:
+                self.game_renderer.update(dt, self.player)
+                self.game_renderer.update(dt, self.mercury)
+                self.game_renderer.update(dt, self.venus)
+                self.game_renderer.update(dt, self.mars)
+                self.update_game()
+                self.game_renderer.draw(self.player, self.collectibles, self.mercury, self.venus, self.mars)
 
-                pygame.display.flip()
+            pygame.display.flip()
 
-            pygame.quit()
-            sys.exit()
+        pygame.quit()
+        sys.exit()
 
     def handle_events(self, events):
         for event in events:
@@ -225,7 +225,7 @@ class GameController:
                     position,
                     CollectibleType.STAR_CRYSTAL,
                     "star_crystal",
-                    value=10,
+                    10,
                 )
             )
 
@@ -234,7 +234,7 @@ class GameController:
                     position,
                     CollectibleType.ZODIAC_SIGN,
                     "star_crystal",
-                    value=3,
+                    3,
                 )
             )
 
@@ -243,7 +243,7 @@ class GameController:
                     position,
                     CollectibleType.CONSTELLATION_FRAGMENT,
                     "star_crystal",
-                    value=3,
+                    3,
                 )
             )
 
@@ -275,6 +275,7 @@ class GameController:
                     position,
                     CollectibleType.CONSTELLATION_FRAGMENT,
                     f"constellation_fragment_{fragment_number}",
+                    3
                 )
             )
 

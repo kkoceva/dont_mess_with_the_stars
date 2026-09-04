@@ -64,3 +64,20 @@ class UIManager:
         )
 
         screen.blit(text, text_rectangle)
+
+    def draw_lost_screen(self, screen):
+        screen.fill((18, 18, 35))
+
+        font = pygame.font.Font(None, 80)
+
+        text = font.render(
+            "YOU Lose!",
+            True,
+            (255, 215, 80),
+        )
+
+        text_rectangle = text.get_rect(
+            center=screen.get_rect().center
+        )
+
+        screen.blit(text, text_rectangle)

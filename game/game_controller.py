@@ -4,7 +4,8 @@ import pygame
 from enum import Enum
 from game.menu import GameMenu
 from game.player import Player
-from game.enemy import Enemy, Mercury, Venus, Mars
+from game.enemy import Mercury, Venus, Mars
+from game.collectible import Collectible, CollectibleType
 from game.game_data import Position
 from game.maps import GameMap, LEVEL_1
 from game.game_renderer import GameRenderer
@@ -178,10 +179,22 @@ class GameController:
     def handle_enemy_collision(self, enemy):
         self.player.take_damage(enemy.damage)
 
-        print(f"Здраве да е: {self.player.status.hp}, "f"Живот: {self.player.status.lives}")
+        print(f"HP: {self.player.status.hp}, "f"Lives: {self.player.status.lives}")
 
         if not self.player.status.is_alive:
             self.state = GameStateType.GAMEOVER
+
+    def handle_player_colision(self, collectible):
+        self.player.update_player_resources(collectible);
+
+    def handle_collectible_collision(self):
+        pass
+
+    def handle_portal_collision(self):
+        pass    
+
+  
+
 
     def get_enemy_position(self, position):
         for enemy in self.enemies:
@@ -213,6 +226,24 @@ class GameController:
                     CollectibleType.STAR_CRYSTAL,
                     "star_crystal",
                     value=10,
+                )
+            )
+
+            self.collectibles.append(
+                Collectible(
+                    position,
+                    CollectibleType.ZODIAC_SIGN,
+                    "star_crystal",
+                    value=3,
+                )
+            )
+
+            self.collectibles.append(
+                Collectible(
+                    position,
+                    CollectibleType.CONSTELLATION_FRAGMENT,
+                    "star_crystal",
+                    value=3,
                 )
             )
 
@@ -266,9 +297,7 @@ class GameController:
             )
 
         elif (
-            collectible.collectible_type
-            == CollectibleType.CONSTELLATION_FRAGMENT
-        ):
+            collectible.collectible_type is CollectibleType.CONSTELLATION_FRAGMENT):
             self.player.resources.add_fragment()
 
         self.collectibles.remove(collectible)

@@ -40,6 +40,8 @@ class GameController:
         mars_position = self.game_map.get_enemy_start_position()
         self.player = Player(start_position)
         self.portal = Portal(portal_position)
+        print(type(self.portal))
+        print(hasattr(self.portal, "update_animation"))
         self.path_finder = PathFinder(LEVEL_1)
         self.mercury = Mercury(mercury_position, self.path_finder)
         self.mars = Mars(mars_position, self.path_finder)
@@ -83,6 +85,7 @@ class GameController:
                 self.game_renderer.update(dt, self.mercury)
                 self.game_renderer.update(dt, self.venus)
                 self.game_renderer.update(dt, self.mars)
+
                 if self.portal.is_active:
                     self.game_renderer.update(dt, self.portal)
                 self.update_game()

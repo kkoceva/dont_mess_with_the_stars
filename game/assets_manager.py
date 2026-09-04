@@ -68,24 +68,20 @@ class AssetManager:
     def get_texture(self, name):
         return self.textures[name]
 
-    def load_portal_animations(self, portal_spritesheet):
-        sheet = SpriteSheet(TEXTURES_DIR / f"{portal_spritesheet}_spritesheet.png")
+    def load_portal_animations(self, portal):
+        sheet = SpriteSheet(TEXTURES_DIR / f"{portal}_spritesheet.png")
         frame_width = 48
         frame_height = 48
         frame_count = 4
 
         target_size = (TILE_SIZE, TILE_SIZE)
         
-        self.animations[f"{portal_spritesheet}_moving"] = sheet.get_row_frames(
+        self.animations["portal"] = sheet.get_row_frames(
             row=0,
             frame_count=frame_count,
             frame_width=frame_width,
             frame_height=frame_height,
             target_size=target_size,
-        )
-
-        self.animations[f"{portal_spritesheet}_walk_down"] = sheet.get_row_frames(
-            1, frame_count, frame_width, frame_height, target_size
         )
     
     def load_animations(self, spritesheet_name):

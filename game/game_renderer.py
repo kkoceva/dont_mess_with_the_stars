@@ -20,9 +20,6 @@ class GameRenderer:
         self.draw_portal(portal)
         for enemy in enemies:
             self.draw_game_object(enemy)
-
-        #for collectible in collectibles:
-         #   self.draw_game_object(collectible)
       
         self.ui_manager.draw(self.screen, player)
 
@@ -63,11 +60,4 @@ class GameRenderer:
         if not portal.is_active:
             return
 
-        portal_texture = self.assets_manager.get_texture(
-            portal.texture_name
-        )
-
-        x = MAP_OFFSET_X + portal.position.x * TILE_SIZE
-        y = MAP_OFFSET_Y + portal.position.y * TILE_SIZE
-
-        self.screen.blit(portal_texture, (x, y))
+        self.draw_game_object(portal)

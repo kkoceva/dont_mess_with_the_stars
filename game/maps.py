@@ -6,7 +6,7 @@ from game.game_data import Position
 FLOOR = "1"
 WALL = "0"
 PLAYER_START = "P"
-PORTAL = "O"
+PORTAL = "2"
 ENEMY = "E"
 COLLECTIBLE = "C"
 
@@ -25,7 +25,7 @@ LEVEL_1 = [
     "01111111110111000010",
     "01111111111111111110",
     "01111000000111111110",
-    "01111111111111111110",
+    "01111111111111111120",
     "00000000000000000000",
 ]
 
@@ -87,4 +87,12 @@ class GameMap:
         if position.x < 0 or position.x >= len(self.level[0]):
             return False
 
-        return self.level[position.y][position.x] == FLOOR
+        return self.level[position.y][position.x] in (FLOOR, PORTAL)
+
+    def get_portal_position(self):
+        for y, row in enumerate(self.level):
+            for x, tile in enumerate(row):
+                if tile == PORTAL:
+                    return Position(x, y)
+
+        return None

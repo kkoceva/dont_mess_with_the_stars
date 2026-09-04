@@ -1,6 +1,8 @@
 # pylint: disable=no-member
 import sys
 import pygame
+
+from game.portal import Portal
 from enum import Enum
 from game.menu import GameMenu
 from game.player import Player
@@ -13,6 +15,7 @@ from game.assets_manager import AssetManager
 from game.settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_TITLE, MAP_OFFSET_Y, MAP_OFFSET_X, TILE_SIZE
 from game.path_finder import PathFinder
 from game.collectible import (Collectible, CollectibleType,)
+
 
 class GameStateType(Enum):
     MENU = "menu",
@@ -30,12 +33,14 @@ class GameController:
         self.assets_manager = AssetManager()
         self.game_renderer = GameRenderer(self.screen)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
-       
+        portal_position = self.game_map.get_portal_position()
+        self.portal = Portal(portal_position)
         start_position = self.game_map.get_player_start_position()
         mercury_position = self.game_map.get_enemy_start_position()
         venus_position = self.game_map.get_enemy_start_position()
         mars_position = self.game_map.get_enemy_start_position()
         self.player = Player(start_position)
+        self.portal = Portal(start_position)
         self.path_finder = PathFinder(LEVEL_1)
         self.mercury = Mercury(mercury_position, self.path_finder)
         self.mars = Mars(mars_position, self.path_finder)
@@ -80,7 +85,7 @@ class GameController:
                 self.game_renderer.update(dt, self.venus)
                 self.game_renderer.update(dt, self.mars)
                 self.update_game()
-                self.game_renderer.draw(self.player, self.collectibles, self.mercury, self.venus, self.mars)
+                self.game_renderer.draw(self.player, self.collectibles, self.portal, self.mercury, self.venus, self.mars)
 
             pygame.display.flip()
 
@@ -192,9 +197,6 @@ class GameController:
 
     def handle_portal_collision(self):
         pass    
-
-  
-
 
     def get_enemy_position(self, position):
         for enemy in self.enemies:

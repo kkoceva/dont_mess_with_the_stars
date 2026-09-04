@@ -90,7 +90,8 @@ class GameController:
                     self.game_renderer.update(dt, self.portal)
                 self.update_game()
                 self.game_renderer.draw(self.player, self.collectibles, self.portal, self.mercury, self.venus, self.mars)
-
+            elif self.state == GameStateType.WIN:
+                 self.game_renderer.draw_win_screen()
             pygame.display.flip()
 
         pygame.quit()
@@ -151,6 +152,8 @@ class GameController:
         if collectible is not None:
             self.collect_item(collectible)
 
+        self.handle_portal_collision()
+
     def update_game(self):
         current_time = pygame.time.get_ticks()
 
@@ -200,7 +203,11 @@ class GameController:
         pass
 
     def handle_portal_collision(self):
-        pass    
+        if not self.portal.is_active:
+            return
+
+        if self.player.position == self.portal.position:
+            self.state = GameStateType.WIN 
 
     def get_enemy_position(self, position):
         for enemy in self.enemies:
@@ -222,8 +229,10 @@ class GameController:
         ]
 
         for _ in range(8):
-            position = self.game_map.get_random_available_position(
-                occupied_positions
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
             )
 
             self.collectibles.append(
@@ -235,29 +244,13 @@ class GameController:
                 )
             )
 
-            self.collectibles.append(
-                Collectible(
-                    position,
-                    CollectibleType.ZODIAC_SIGN,
-                    "star_crystal",
-                    3,
-                )
-            )
-
-            self.collectibles.append(
-                Collectible(
-                    position,
-                    CollectibleType.CONSTELLATION_FRAGMENT,
-                    "star_crystal",
-                    3,
-                )
-            )
-
             occupied_positions.append(position)
 
         for _ in range(2):
-            position = self.game_map.get_random_available_position(
-                occupied_positions
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
             )
 
             self.collectibles.append(
@@ -265,15 +258,17 @@ class GameController:
                     position,
                     CollectibleType.ZODIAC_SIGN,
                     "zodiac_sign",
-                    value=25,
+                    25,
                 )
             )
 
             occupied_positions.append(position)
 
         for fragment_number in range(1, 4):
-            position = self.game_map.get_random_available_position(
-                occupied_positions
+            position = (
+                self.game_map.get_random_available_position(
+                    occupied_positions
+                )
             )
 
             self.collectibles.append(
@@ -281,7 +276,7 @@ class GameController:
                     position,
                     CollectibleType.CONSTELLATION_FRAGMENT,
                     f"constellation_fragment_{fragment_number}",
-                    3
+                    1,
                 )
             )
 

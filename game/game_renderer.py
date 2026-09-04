@@ -61,3 +61,8 @@ class GameRenderer:
             return
 
         self.draw_game_object(portal)
+
+    def draw_win_screen(self):
+        self.ui_manager.draw_win_screen(self.screen)
+
+    

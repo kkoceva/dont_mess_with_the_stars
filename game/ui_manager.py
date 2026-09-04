@@ -47,3 +47,20 @@ class UIManager:
 
     def draw_title(self, screen, img_name, x_position, y_position):
          screen.blit(img_name, (x_position, y_position))
+
+    def draw_win_screen(self, screen):
+        screen.fill((18, 18, 35))
+
+        font = pygame.font.Font(None, 80)
+
+        text = font.render(
+            "YOU WIN!",
+            True,
+            (255, 215, 80),
+        )
+
+        text_rectangle = text.get_rect(
+            center=screen.get_rect().center
+        )
+
+        screen.blit(text, text_rectangle)

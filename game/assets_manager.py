@@ -42,9 +42,11 @@ class AssetManager:
     def load_all(self):
         self.load_texture("floor", "floor.png")
         self.load_texture("wall", "wall.png")
+        self.load_texture("star_crystal", "star_crystal.png")
+        self.load_texture("zodiac_sign", "zodiac_sign.png")
         self.load_texture(
-        "constellation_fragment_1",
-        "constellation_fragment_1.png",
+            "constellation_fragment_1",
+            "constellation_fragment_1.png",
         )
         self.load_texture(
             "constellation_fragment_2",
@@ -54,8 +56,6 @@ class AssetManager:
             "constellation_fragment_3",
             "constellation_fragment_3.png",
         )
-        self.load_texture("star_crystal_1","star_crystal.png")
-        self.load_texture("star_crystal", "star_crystal.png")
         self.load_title("title", "title.png")
         self.load_title("menu_button", "menu_button.png")
         self.load_animations("player")

@@ -8,12 +8,16 @@ class CollectibleType(Enum):
 
 class Collectible:
     def __init__(
-        self, position: Position, collectible_type: CollectibleType, collectible_name, value: int):
+        self,
+        position,
+        collectible_type,
+        texture_name,
+        value,
+    ):
         self.position = position
         self.collectible_type = collectible_type
-        self.collectible_name = collectible_name
+        self.texture_name = texture_name
         self.value = value
-        self.is_collected = False
 
     def collect(self):
         self.is_collected = True

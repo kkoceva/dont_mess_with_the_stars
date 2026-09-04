@@ -15,7 +15,7 @@ class GameRenderer:
 
     def draw(self, player, collectibles, *enemies):
         self.game_map.draw(self.screen)
-        ##self.draw_game_object(collectibles)
+        self.draw_collectibles(collectibles)
         self.draw_game_object(player)
         for enemy in enemies:
             self.draw_game_object(enemy)
@@ -39,11 +39,11 @@ class GameRenderer:
         player.update_animation(dt, len(frames))
 
     def draw_collectibles(self, collectibles):
-        texture = self.assets_manager.get_texture(
-            "collectible"
-        )
-
         for collectible in collectibles:
+            texture = self.assets_manager.get_texture(
+                collectible.texture_name
+            )
+
             x_position = (
                 MAP_OFFSET_X
                 + collectible.position.x * TILE_SIZE
@@ -55,5 +55,5 @@ class GameRenderer:
 
             self.screen.blit(
                 texture,
-                (x_position, y_position)
+                (x_position, y_position),
             )

@@ -34,13 +34,12 @@ class GameController:
         self.game_renderer = GameRenderer(self.screen)
         self.game_map = GameMap(LEVEL_1, self.assets_manager)
         portal_position = self.game_map.get_portal_position()
-        self.portal = Portal(portal_position)
         start_position = self.game_map.get_player_start_position()
         mercury_position = self.game_map.get_enemy_start_position()
         venus_position = self.game_map.get_enemy_start_position()
         mars_position = self.game_map.get_enemy_start_position()
         self.player = Player(start_position)
-        self.portal = Portal(start_position)
+        self.portal = Portal(portal_position)
         self.path_finder = PathFinder(LEVEL_1)
         self.mercury = Mercury(mercury_position, self.path_finder)
         self.mars = Mars(mars_position, self.path_finder)
@@ -84,6 +83,8 @@ class GameController:
                 self.game_renderer.update(dt, self.mercury)
                 self.game_renderer.update(dt, self.venus)
                 self.game_renderer.update(dt, self.mars)
+                if self.portal.is_active:
+                    self.game_renderer.update(dt, self.portal)
                 self.update_game()
                 self.game_renderer.draw(self.player, self.collectibles, self.portal, self.mercury, self.venus, self.mars)
 
@@ -291,16 +292,23 @@ class GameController:
         return None
 
     def collect_item(self, collectible):
-        if collectible.collectible_type in (
-            CollectibleType.STAR_CRYSTAL,
-            CollectibleType.ZODIAC_SIGN,
-        ):
-            self.player.resources.add_energy(
-                collectible.value
-            )
+        if collectible.collectible_type in (CollectibleType.STAR_CRYSTAL, CollectibleType.ZODIAC_SIGN):
+            self.player.resources.add_energy(collectible.value)
 
         elif (
             collectible.collectible_type is CollectibleType.CONSTELLATION_FRAGMENT):
             self.player.resources.add_fragment()
 
         self.collectibles.remove(collectible)
+
+        self.update_portal()
+
+
+    def has_required_portal_resources(self):
+        resources = self.player.resources
+
+        return (resources.fragments >= resources.required_fragments and resources.energy >= resources.required_energy)
+
+    def update_portal(self):
+        if self.has_required_portal_resources():
+            self.portal.activate()
